@@ -56,18 +56,12 @@ install(DIRECTORY cmake DESTINATION share/${PROJECT_NAME})
 if(BUILD_TESTING)
   # TODO(anyone) lint testing
   # find_package(ament_lint_auto REQUIRED)
-  # # the following line skips the linter which checks for copyrights
-  # # comment the line when a copyright and license is added to all source files
-  # set(ament_cmake_copyright_FOUND TRUE)
-  # # the following line skips cpplint (only works in a git repo)
-  # # comment the line when this package is in a git repo and when
-  # # a copyright and license is added to all source files
   # set(ament_cmake_cpplint_FOUND TRUE)
+  # set(ament_cmake_copyright_FOUND TRUE)
   # ament_lint_auto_find_test_dependencies()
 
   find_package(rclpy REQUIRED)
   find_package(std_srvs REQUIRED)
-  find_package(catch_ros2 REQUIRED)
   include(CTest)
 
   # Node for testing remote launch capabilities
@@ -94,30 +88,6 @@ if(BUILD_TESTING)
     test/node/test_node_params2.yaml
     DESTINATION share/${PROJECT_NAME}/test
   )
-  # catch_ros2 tester nodes
-  add_executable(test_launch_tester_node
-    test/launch/test_launch_tester_node.cpp
-  )
-  target_link_libraries(test_launch_tester_node
-    catch_ros2::catch_ros2_with_node_main
-  )
-  install(TARGETS
-    test_launch_tester_node
-    DESTINATION lib/${PROJECT_NAME}
-  )
-  add_executable(test_node_tester_node
-    test/node/test_node_tester_node.cpp
-  )
-  ament_target_dependencies(test_node_tester_node
-    std_srvs
-  )
-  target_link_libraries(test_node_tester_node
-    catch_ros2::catch_ros2_with_node_main
-  )
-  install(TARGETS
-    test_node_tester_node
-    DESTINATION lib/${PROJECT_NAME}
-  )
 
   # Set directories and include CMake function for use in tests
   set(launch_remote_ssh_DIR ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/cmake)
@@ -138,6 +108,5 @@ ament_export_dependencies(
   rclcpp
 )
 
-ament_package(CONFIG_EXTRAS
-  cmake/generate_flexible_launch_xmls.cmake
-)
+ament_package(CONFIG_EXTRAS "cmake/generate_flexible_launch_xmls.cmake")
+
